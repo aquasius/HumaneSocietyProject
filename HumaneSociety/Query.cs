@@ -206,12 +206,14 @@ namespace HumaneSociety
             employeeToUpdate.LastName = employee.LastName;
             employeeToUpdate.EmployeeNumber = employee.EmployeeNumber;
             employeeToUpdate.Email = employee.Email;
+            db.SubmitChanges();
         }
 
         public static void DeleteEmployee(Employee employee)
         {
             db.Employees.DeleteOnSubmit(employee);
             db.SubmitChanges();
+            Console.WriteLine("employee deleted");
         }
 
         internal static void AddAnimal(Animal animal)
@@ -343,19 +345,32 @@ namespace HumaneSociety
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-           // var submitAdoption = db
-          //submitAdoption.animal = animal.AnimalId;
-          //submitAdoption.client = client.ClientId;
+            Adoption adoption = new Adoption();
+            adoption.AnimalId = animal.AnimalId;
+            adoption.ClientId = client.ClientId;
+            adoption.AdoptionFee = 80;
+            adoption.ApprovalStatus = "pending";
+            db.Adoptions.InsertOnSubmit(adoption);
+            db.SubmitChanges();
            
         }
 
-        //internal static IQueryable<Adoption> GetPendingAdoptions()
-        //{
-        //}
+        internal static IQueryable<Adoption> GetPendingAdoptions()
+        {
+
+        }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
         {
-            throw new NotImplementedException();
+           
+            if(isAdopted == true)
+            {
+                Adoption adoptionUpdate = db.Adoptions.Where(a => a.AnimalId == adoption.AnimalId && a.ClientId == adoption.ClientId).Select(a => a).Single();
+                adoptionUpdate.ApprovalStatus = "Approved";
+                adoptionUpdate.PaymentCollected = true;
+                db.SubmitChanges();
+            }
+
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
