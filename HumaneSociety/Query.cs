@@ -174,57 +174,49 @@ namespace HumaneSociety
         internal static void AddAnimal(Animal animal)
 
         {
-
             db.Animals.InsertOnSubmit(animal);
-            db.SubmitChanges();            
-
-
+            db.SubmitChanges();
+            Console.WriteLine("Animal Added.");
         }
 
         internal static Animal GetAnimalByID(int id)
         {
-
             return db.Animals.Where(a => a.AnimalId == id).Single();
-            
-
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
             Animal dbAnimal = db.Animals.Where(a => a.AnimalId == animalId).Select(a => a).Single();
 
-            if (dbAnimal.Category = updates[1])
+            if (dbAnimal.Category.Name != updates[1])
             {
-                db.Animals.InsertOnSubmit(updates);
+                dbAnimal.Category.Name = updates[1];
             }
-            else if (dbAnimal.Name = updates[2])
+            else if (dbAnimal.Name != updates[2])
             {
-                db.Animals.InsertOnSubmit(updates);
+                dbAnimal.Name = updates[2];
             }
-            else if (dbAnimal.Age = updates[3])
+            else if (dbAnimal.Age != Convert.ToInt32(updates[3]))
             {
-                db.Animals.InsertOnSubmit(updates);
+                dbAnimal.Age = Convert.ToInt32(updates[3]);
             }
-            else if (dbAnimal.Demeanor = updates[4])
+            else if (dbAnimal.Demeanor != updates[4])
             {
-                db.Animals.InsertOnSubmit(updates);
+                dbAnimal.Demeanor = updates[4];
             }
-            else if (dbAnimal.KidFriendly = updates[5])
+            else if (dbAnimal.KidFriendly != Convert.ToBoolean(updates[5]))
             {
-                db.Animals.InsertOnSubmit(updates);
+                dbAnimal.KidFriendly = Convert.ToBoolean(updates[5]);
             }
-            else if(dbAnimal.PetFriendly = updates[6])
+            else if(dbAnimal.PetFriendly != Convert.ToBoolean(updates[6]))
             {
-                db.Animals.InsertOnSubmit(updates);
+                dbAnimal.PetFriendly = Convert.ToBoolean(updates[6]);
             }
-            else if (dbAnimal.Weight = updates[7])
+            else if (dbAnimal.Weight != Convert.ToInt32(updates[7]))
             {
-                db.Animals.InsertOnSubmit(updates);
+                dbAnimal.Weight = Convert.ToInt32(updates[7]);
             }
-            else
-            {
-                db.Animals.InsertOnSubmit(updates);
-            }
+            db.SubmitChanges();
         }
 
         internal static void RemoveAnimal(Animal animal)
