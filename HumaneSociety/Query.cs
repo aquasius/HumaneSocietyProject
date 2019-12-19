@@ -167,10 +167,53 @@ namespace HumaneSociety
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
-            throw new NotImplementedException();
+            switch(crudOperation)
+            {
+                case "create":
+                    AddEmployee(employee);
+                    break;
+                case "read":
+                    ReadEmployee(employee);
+                    break;
+                case "update":
+                    UpdateEmployee(employee);
+                        break;
+                case "delete":
+                    DeleteEmployee(employee);
+                    break;
+
+            }
         }
 
         // TODO: Animal CRUD Operations
+        public static void AddEmployee(Employee employee)
+        {
+            db.Employees.InsertOnSubmit(employee);
+            db.SubmitChanges();
+        }
+        
+        public static void ReadEmployee(Employee employee)
+        {
+            List<string> info = new List<string>() { $"Employee Number: {employee.EmployeeNumber}", $"Last Name:  {employee.LastName}", $"First Name:  {employee.FirstName}", $"email : {employee.Email}" };
+            UserInterface.DisplayUserOptions(info);
+            Console.ReadLine();
+        }
+        
+        public static void UpdateEmployee(Employee employee)
+        {
+            var employeeToUpdate = db.Employees.Where(r => r.EmployeeId == employee.EmployeeId).FirstOrDefault();
+            employeeToUpdate.FirstName = employee.FirstName;
+            employeeToUpdate.LastName = employee.LastName;
+            employeeToUpdate.EmployeeNumber = employee.EmployeeNumber;
+            employeeToUpdate.Email = employee.Email;
+        }
+
+        public static void DeleteEmployee(Employee employee)
+        {
+            db.Employees.DeleteOnSubmit(employee);
+            db.SubmitChanges();
+        }
+
         internal static void AddAnimal(Animal animal)
 
         {
@@ -259,12 +302,15 @@ namespace HumaneSociety
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-            throw new NotImplementedException();
+           // var submitAdoption = db
+          //submitAdoption.animal = animal.AnimalId;
+          //submitAdoption.client = client.ClientId;
+           
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
-            throw new NotImplementedException();
+           
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
