@@ -10,10 +10,9 @@ namespace HumaneSociety
     {
         static void Main(string[] args)
         {
-            Admin.UpdateEmployee();
 
+            PointOfEntry.Run();
 
-            //PointOfEntry.Run();
         }
     }
 }

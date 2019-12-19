@@ -82,11 +82,13 @@ namespace HumaneSociety.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DESKTOP-S5A17BB\\SQLEXPRESS;Initial Catalog=HumaneeSociety;Integrated " +
             "Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False")]
         public string HumaneeSocietyConnectionString {
             get {
                 return ((string)(this["HumaneeSocietyConnectionString"]));
+
             }
         }
     }

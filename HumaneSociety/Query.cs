@@ -8,11 +8,12 @@ namespace HumaneSociety
 {
     public static class Query
     {        
-        static HscoietyUMLDataContext db;
+
+        static HumaneSocietyDataContext db;
 
         static Query()
         {
-            db = new HscoietyUMLDataContext();
+            db = new HumaneSocietyDataContext();
         }
 
         internal static List<USState> GetStates()
@@ -172,15 +173,18 @@ namespace HumaneSociety
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
+
             db.Animals.InsertOnSubmit(animal);
-            db.SubmitChanges();
-            
+            db.SubmitChanges();            
+
         }
 
         internal static Animal GetAnimalByID(int id)
         {
+
             return db.Animals.Where(a => a.AnimalId == id).Single();
             
+
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
