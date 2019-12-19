@@ -8,6 +8,7 @@ namespace HumaneSociety
 {
     public static class Query
     {        
+
         static HumaneSocietyDataContext db;
 
         static Query()
@@ -171,13 +172,21 @@ namespace HumaneSociety
 
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
-        { 
+
+        {
+
+            db.Animals.InsertOnSubmit(animal);
+            db.SubmitChanges();            
+
 
         }
 
         internal static Animal GetAnimalByID(int id)
         {
-            throw new NotImplementedException();
+
+            return db.Animals.Where(a => a.AnimalId == id).Single();
+            
+
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)

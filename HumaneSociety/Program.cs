@@ -12,6 +12,7 @@ namespace HumaneSociety
         {
 
             PointOfEntry.Run();
+
         }
     }
 }

@@ -88,7 +88,10 @@ namespace HumaneSociety
         {
             foreach(Animal animal in animals)
             {
+
+
                 Console.WriteLine(animal.AnimalId + " " + animal.Name + " " + animal.Category.Name);
+
             }
         }
 
