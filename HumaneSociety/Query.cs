@@ -217,25 +217,49 @@ namespace HumaneSociety
         internal static void AddAnimal(Animal animal)
 
         {
-
             db.Animals.InsertOnSubmit(animal);
-            db.SubmitChanges();            
-
-
+            db.SubmitChanges();
+            Console.WriteLine("Animal Added.");
         }
 
         internal static Animal GetAnimalByID(int id)
         {
-
             return db.Animals.Where(a => a.AnimalId == id).Single();
-            
-
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
-            //Animal dbAnimal = db.Animals.Where(a => a.AnimalId == animalId);
-            //dbAnimal.Demeanor = updates[1];
+            Animal dbAnimal = db.Animals.Where(a => a.AnimalId == animalId).Select(a => a).Single();
+
+            if (dbAnimal.Category.Name != updates[1])
+            {
+                dbAnimal.Category.Name = updates[1];
+            }
+            else if (dbAnimal.Name != updates[2])
+            {
+                dbAnimal.Name = updates[2];
+            }
+            else if (dbAnimal.Age != Convert.ToInt32(updates[3]))
+            {
+                dbAnimal.Age = Convert.ToInt32(updates[3]);
+            }
+            else if (dbAnimal.Demeanor != updates[4])
+            {
+                dbAnimal.Demeanor = updates[4];
+            }
+            else if (dbAnimal.KidFriendly != Convert.ToBoolean(updates[5]))
+            {
+                dbAnimal.KidFriendly = Convert.ToBoolean(updates[5]);
+            }
+            else if(dbAnimal.PetFriendly != Convert.ToBoolean(updates[6]))
+            {
+                dbAnimal.PetFriendly = Convert.ToBoolean(updates[6]);
+            }
+            else if (dbAnimal.Weight != Convert.ToInt32(updates[7]))
+            {
+                dbAnimal.Weight = Convert.ToInt32(updates[7]);
+            }
+            db.SubmitChanges();
         }
 
         internal static void RemoveAnimal(Animal animal)
