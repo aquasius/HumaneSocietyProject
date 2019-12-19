@@ -271,13 +271,54 @@ namespace HumaneSociety
         }
         
         // TODO: Animal Multi-Trait Search
-        internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates, int animalId) // parameter(s)?
+        internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
-            Animal dbAnimal = db.Animals.Where(a => a.AnimalId == animalId).Select(a => a).Single();
+           foreach (KeyValuePair update in updates)
+            {
+                switch (update)
+                {
+                    case (update.Value == null):
+                        //EnterSearchCriteria;
+                        break;
+                    case (update.Key == 1):
+                        var dbCatagory = db.Animals.Where(a => a.Category == update.Value).Select(a => a).Single();
+           
+                        break;
+                    case (update.Key == 2):
+                        var dbName = db.Animals.Where(a => a.Name == update.Value).Select(a => a).Single();
 
-          
-            throw new NotImplementedException();
-            //return Animal;
+                        break;
+                    case (update.Key == 3):
+                        var dbAge = db.Animals.Where(a => a.Age == update.Value).Select(a => a).Single();
+
+                        break;
+                    case (update.Key == 4):
+                        var dbDemeanor = db.Animals.Where(a => a.Demeanor == update.Value).Select(a => a).Single();
+
+                        break;
+                    case (update.Key == 5):
+                        var dbKidFriendly = db.Animals.Where(a => a.KidFriendly == update.Value).Select(a => a).Single();
+
+                        break;
+                    case (update.Key == 6):
+                        var dbPetFriendly = db.Animals.Where(a => a.PetFriendly == update.Value).Select(a => a).Single();
+
+                        break;
+                    case (update.Key == 7):
+                        var dbWeight = db.Animals.Where(a => a.Weight == update.Value).Select(a => a).Single();
+
+                        break;
+                    case (update.Key == 8):
+                        var dbAnimalId = db.Animals.Where(a => a.AnimalId == update.Value).Select(a => a).Single();
+
+                        break;
+                    default:
+                        UserInterface.DisplayUserOptions("Input not recognized please try again."); //this the function we want?
+                        break;
+                }
+            }
+            
+            //return var;
         }
          
         // TODO: Misc Animal Things
@@ -308,10 +349,9 @@ namespace HumaneSociety
            
         }
 
-        internal static IQueryable<Adoption> GetPendingAdoptions()
-        {
-           
-        }
+        //internal static IQueryable<Adoption> GetPendingAdoptions()
+        //{
+        //}
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
         {
