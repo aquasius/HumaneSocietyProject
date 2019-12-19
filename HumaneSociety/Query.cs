@@ -275,52 +275,63 @@ namespace HumaneSociety
         // TODO: Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
-           foreach (KeyValuePair update in updates)
+            var results = db.Animals.AsQueryable();
+
+            foreach (KeyValuePair<int,string> update in updates)
             {
-                switch (update)
-                {
-                    case (update.Value == null):
-                        //EnterSearchCriteria;
-                        break;
-                    case (update.Key == 1):
-                        var dbCatagory = db.Animals.Where(a => a.Category == update.Value).Select(a => a).Single();
-           
-                        break;
-                    case (update.Key == 2):
-                        var dbName = db.Animals.Where(a => a.Name == update.Value).Select(a => a).Single();
+                
+            if(update.Value != null) {
+                    switch (update.Key)
+                    {
+                        case 1:
+                            var dbCatagory = results.Where(a => a.Category.Name == update.Value);
+                            results = dbCatagory;
 
-                        break;
-                    case (update.Key == 3):
-                        var dbAge = db.Animals.Where(a => a.Age == update.Value).Select(a => a).Single();
+                            //include id and name to direct back to animals
+                            break;
+                        case 2:
+                            var dbName = results.Where(a => a.Name == update.Value);
+                            results = dbName;
 
-                        break;
-                    case (update.Key == 4):
-                        var dbDemeanor = db.Animals.Where(a => a.Demeanor == update.Value).Select(a => a).Single();
+                            break;
+                        case 3:
+                            var dbAge = results.Where(a => a.Age == Convert.ToInt32(update.Value));
 
-                        break;
-                    case (update.Key == 5):
-                        var dbKidFriendly = db.Animals.Where(a => a.KidFriendly == update.Value).Select(a => a).Single();
+                            break;
+                        case 4:
+                            var dbDemeanor = results.Where(a => a.Demeanor == update.Value);
 
-                        break;
-                    case (update.Key == 6):
-                        var dbPetFriendly = db.Animals.Where(a => a.PetFriendly == update.Value).Select(a => a).Single();
+                            break;
+                        case 5:
+                            var dbKidFriendly = results.Where(a => a.KidFriendly == Convert.ToBoolean(update.Value));
 
-                        break;
-                    case (update.Key == 7):
-                        var dbWeight = db.Animals.Where(a => a.Weight == update.Value).Select(a => a).Single();
+                            break;
+                        case 6:
+                            var dbPetFriendly = results.Where(a => a.PetFriendly == Convert.ToBoolean(update.Value));
 
-                        break;
-                    case (update.Key == 8):
-                        var dbAnimalId = db.Animals.Where(a => a.AnimalId == update.Value).Select(a => a).Single();
+                            break;
+                        case 7:
+                            var dbWeight = results.Where(a => a.Weight == Convert.ToInt32(update.Value));
 
-                        break;
-                    default:
-                        UserInterface.DisplayUserOptions("Input not recognized please try again."); //this the function we want?
-                        break;
+                            break;
+                        case 8:
+                            var dbAnimalId = results.Where(a => a.AnimalId == Convert.ToInt32(update.Value));
+
+                            break;
+                        default:
+                            UserInterface.DisplayUserOptions("Input not recognized please try again."); //this the function we want?
+                            break;
+                    }
                 }
+                else
+                {
+                    UserInterface.DisplayUserOptions("Input not recognized please try again."); //this the function we want?
+                    
+                }
+                
             }
-            
-            //return var;
+
+            return results;
         }
          
         // TODO: Misc Animal Things
