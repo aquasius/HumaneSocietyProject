@@ -327,8 +327,8 @@ namespace HumaneSociety
         // TODO: Misc Animal Things
         internal static int? GetCategoryId(string categoryName)
         {
-            var foundCategoryId = db.Animals.Where(a => a.Category.Name == categoryName).Single();
-            return foundCategoryId.CategoryId;
+            var foundCategoryId = db.Animals.Where(a => a.Category.Name == categoryName).Select(a => a.CategoryId).Single();
+            return foundCategoryId;
         }
         
         internal static Room GetRoom(int animalId)
