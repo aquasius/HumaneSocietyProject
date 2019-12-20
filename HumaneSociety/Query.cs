@@ -278,45 +278,37 @@ namespace HumaneSociety
             var results = db.Animals.AsQueryable();
 
             foreach (KeyValuePair<int,string> update in updates)
-            {
-                
+            {   
             if(update.Value != null) {
                     switch (update.Key)
                     {
                         case 1:
-                            var dbCatagory = results.Where(a => a.Category.Name == update.Value);
-                            results = dbCatagory;
-
-                            //include id and name to direct back to animals
+                            var dbCatagory = db.Categories.Where(a => a.Name == update.Value).FirstOrDefault();
+                            var dbCatagoryId = dbCatagory.CategoryId;
+                            var dbCatagoryResult = results.Where(a => a.CategoryId == dbCatagoryId);
+                            results = dbCatagoryResult;
                             break;
                         case 2:
                             var dbName = results.Where(a => a.Name == update.Value);
                             results = dbName;
-
                             break;
                         case 3:
                             var dbAge = results.Where(a => a.Age == Convert.ToInt32(update.Value));
-
                             break;
                         case 4:
                             var dbDemeanor = results.Where(a => a.Demeanor == update.Value);
-
                             break;
                         case 5:
                             var dbKidFriendly = results.Where(a => a.KidFriendly == Convert.ToBoolean(update.Value));
-
                             break;
                         case 6:
                             var dbPetFriendly = results.Where(a => a.PetFriendly == Convert.ToBoolean(update.Value));
-
                             break;
                         case 7:
                             var dbWeight = results.Where(a => a.Weight == Convert.ToInt32(update.Value));
-
                             break;
                         case 8:
                             var dbAnimalId = results.Where(a => a.AnimalId == Convert.ToInt32(update.Value));
-
                             break;
                         default:
                             UserInterface.DisplayUserOptions("Input not recognized please try again."); //this the function we want?
@@ -326,11 +318,8 @@ namespace HumaneSociety
                 else
                 {
                     UserInterface.DisplayUserOptions("Input not recognized please try again."); //this the function we want?
-                    
                 }
-                
             }
-
             return results;
         }
          
