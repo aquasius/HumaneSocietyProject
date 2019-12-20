@@ -319,20 +319,27 @@ namespace HumaneSociety
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
-            int results;
-
             try
             {
-                var foundCategoryId = db.Animals.Where(a => a.Category.Name == categoryName).Single();
-                results = Convert.ToInt32(foundCategoryId.CategoryId);
-                return results;
+                Category foundCategoryId = db.Categories.Where(a => a.Name == categoryName).Single();
+                return foundCategoryId.CategoryId;
             }
             catch(NullReferenceException)
             {
-                Console.WriteLine("Could not find that category. Please enter a category name that exists in the system.");
-
+                AddCategoryId(categoryName);
+                Category foundCategoryId = db.Categories.Where(a => a.Name == categoryName).Single();
+                return foundCategoryId.CategoryId;
             }
 
+        }
+        
+        internal static void AddCategoryId(string categoryName)
+        {
+            Category createCategory = new Category();
+            createCategory.Name = categoryName;
+            db.Categories.InsertOnSubmit(createCategory);
+            db.SubmitChanges();
+           
         }
 
         internal static Room GetRoom(int animalId)
@@ -341,12 +348,32 @@ namespace HumaneSociety
             return db.Rooms.Where(s => s.AnimalId == foundAnimalId).Single();
         }
         
-        internal static int? GetDietPlanId(string dietPlanName)
+        internal static int GetDietPlanId(string dietPlanName)
         {
-           var foundDietPlan = db.Animals.Where(a => a.DietPlan.Name == dietPlanName).Single();
-           return foundDietPlan.DietPlanId;
+         
+            try
+            {
+                DietPlan foundDietPlan = db.DietPlans.Where(a => a.Name == dietPlanName).Single();
+                return foundDietPlan.DietPlanId;
+            }
+            catch(NullReferenceException)
+            {
+                AddDietPlanId(dietPlanName);
+                DietPlan foundDietPlan = db.DietPlans.Where(a => a.Name == dietPlanName).Single();
+                return foundDietPlan.DietPlanId;
+            }
+            
+           
         }
 
+        internal static void AddDietPlanId(string dietPlanName)
+        {
+            DietPlan newDietPlan = new DietPlan();
+            newDietPlan.Name = dietPlanName;
+            db.DietPlans.InsertOnSubmit(newDietPlan);
+            db.SubmitChanges();
+        }
+     
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
