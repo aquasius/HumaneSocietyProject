@@ -181,7 +181,6 @@ namespace HumaneSociety
                 case "delete":
                     DeleteEmployee(employee);
                     break;
-
             }
         }
 
@@ -217,7 +216,6 @@ namespace HumaneSociety
         }
 
         internal static void AddAnimal(Animal animal)
-
         {
             db.Animals.InsertOnSubmit(animal);
             db.SubmitChanges();
@@ -229,7 +227,7 @@ namespace HumaneSociety
             return db.Animals.Where(a => a.AnimalId == id).Single();
         }
 
-        internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
+        public static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
             Animal dbAnimal = db.Animals.Where(a => a.AnimalId == animalId).Single();
             foreach(KeyValuePair<int,string> update in updates)
@@ -237,9 +235,7 @@ namespace HumaneSociety
                 switch (update.Key)
                 {
                     case 1:
-                        var dbCatagory = db.Categories.Where(a => a.Name == update.Value).SingleOrDefault();
-                        var dbCatagoryId = dbCatagory.CategoryId;
-                        dbAnimal.CategoryId = dbCatagoryId;
+                        dbAnimal.Category.Name = update.Value;
                         break;
                     case 2:
                         dbAnimal.Name = update.Value;
@@ -280,8 +276,7 @@ namespace HumaneSociety
             var results = db.Animals.AsQueryable();
 
             foreach (KeyValuePair<int,string> update in updates)
-            {   
-            if(update.Value != null) {
+            { 
                     switch (update.Key)
                     {
                         case 1:
@@ -316,22 +311,28 @@ namespace HumaneSociety
                             UserInterface.DisplayUserOptions("Input not recognized please try again."); //this the function we want?
                             break;
                     }
-                }
-                else
-                {
-                    UserInterface.DisplayUserOptions("Input not recognized please try again."); //this the function we want?
-                }
             }
             return results;
         }
          
         // TODO: Misc Animal Things
-        internal static int? GetCategoryId(string categoryName)
+        internal static int GetCategoryId(string categoryName)
         {
-            var foundCategoryId = db.Animals.Where(a => a.Category.Name == categoryName).Single();
-            return foundCategoryId.CategoryId;
+            int results;
+
+            try
+            {
+                var foundCategoryId = db.Animals.Where(a => a.Category.Name == categoryName).Single();
+                results = Convert.ToInt32(foundCategoryId.CategoryId);
+                return results;
+            }
+            catch(NullReferenceException)
+            {
+                Console.WriteLine("Could not find that category. Please enter a category name that exists in the system.");
+                
+            }
         }
-        
+
         internal static Room GetRoom(int animalId)
         {
             var foundAnimalId = db.Animals.Where(a => a.AnimalId == animalId).Single().AnimalId;
@@ -354,7 +355,6 @@ namespace HumaneSociety
             adoption.ApprovalStatus = "pending";
             db.Adoptions.InsertOnSubmit(adoption);
             db.SubmitChanges();
-           
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
@@ -372,7 +372,6 @@ namespace HumaneSociety
                 adoptionUpdate.PaymentCollected = true;
                 db.SubmitChanges();
             }
-
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
@@ -385,7 +384,6 @@ namespace HumaneSociety
         // TODO: Shots Stuff
         internal static IQueryable<AnimalShot> GetShots(Animal animal)
         {
-
              return db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).Select(a => a);
         }
 
