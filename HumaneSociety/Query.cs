@@ -193,7 +193,8 @@ namespace HumaneSociety
         
         public static void ReadEmployee(Employee employee)
         {
-            List<string> info = new List<string>() { $"Employee Number: {employee.EmployeeNumber}", $"Last Name:  {employee.LastName}", $"First Name:  {employee.FirstName}", $"email : {employee.Email}" };
+            var employeeToRead = db.Employees.FirstOrDefault(e => e.EmployeeNumber == employee.EmployeeNumber);
+            List<string> info = new List<string>() { "Employee Number : " + employeeToRead.EmployeeNumber + "Name : " + employeeToRead.FirstName + employeeToRead.LastName, "Email : " + employeeToRead.Email };
             UserInterface.DisplayUserOptions(info);
             Console.ReadLine();
         }
@@ -258,8 +259,8 @@ namespace HumaneSociety
                     default:
                         break;
                 }
-            }
-        db.SubmitChanges();
+            }  
+            db.SubmitChanges();
         }
 
         internal static void RemoveAnimal(Animal animal)
@@ -329,8 +330,9 @@ namespace HumaneSociety
             catch(NullReferenceException)
             {
                 Console.WriteLine("Could not find that category. Please enter a category name that exists in the system.");
-                
+
             }
+
         }
 
         internal static Room GetRoom(int animalId)
@@ -359,7 +361,10 @@ namespace HumaneSociety
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
+
             return db.Adoptions.Where(a => a.ApprovalStatus == "pending");
+            
+
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
@@ -385,6 +390,7 @@ namespace HumaneSociety
         internal static IQueryable<AnimalShot> GetShots(Animal animal)
         {
              return db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).Select(a => a);
+
         }
 
         internal static void UpdateShot(string shotName, Animal animal)
