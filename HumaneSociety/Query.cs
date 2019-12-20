@@ -368,12 +368,9 @@ namespace HumaneSociety
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
-<<<<<<< HEAD
 
             return db.Adoptions.Where(a => a.ApprovalStatus == "pending");
             
-=======
->>>>>>> b0612581f59de4ea6a6f2e4d8dace0ad18772cd0
 
         }
 
@@ -400,9 +397,7 @@ namespace HumaneSociety
         // TODO: Shots Stuff
         internal static IQueryable<AnimalShot> GetShots(Animal animal)
         {
-            IQueryable<AnimalShot> getShotUpdate = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId);
-            return getShotUpdate;
-
+             return db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).Select(a => a);
 
         }
 
@@ -411,7 +406,15 @@ namespace HumaneSociety
             AnimalShot updateNewShot = new AnimalShot();
             updateNewShot.AnimalId = animal.AnimalId;
 
-            var shotGiven = db.AnimalShots.Where(s => s.ShotId)
+            var shotGivenToAnimal = db.Shots.Where(s => s.Name == shotName).Single();
+
+            updateNewShot.ShotId = shotGivenToAnimal.ShotId;
+            updateNewShot.DateReceived = DateTime.Now;
+            db.AnimalShots.Where(a => a.AnimalId == shotGivenToAnimal.ShotId);
+
+            db.AnimalShots.InsertOnSubmit(updateNewShot);
+            db.SubmitChanges();
+            
         }
     }
 }
