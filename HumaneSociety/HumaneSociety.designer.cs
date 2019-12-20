@@ -22,7 +22,7 @@ namespace HumaneSociety
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="HumaneSociety")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="HumaneeSociety")]
 	public partial class HumaneSocietyDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -71,23 +71,7 @@ namespace HumaneSociety
 			OnCreated();
 		}
 		
-		public HumaneSocietyDataContext(string connection) : 
-				base(connection, mappingSource)
-		{
-			OnCreated();
-		}
-		
-		public HumaneSocietyDataContext(System.Data.IDbConnection connection) : 
-				base(connection, mappingSource)
-		{
-			OnCreated();
-		}
-		
-		public HumaneSocietyDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
-				base(connection, mappingSource)
-		{
-			OnCreated();
-		}
+
 		
 		public HumaneSocietyDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
