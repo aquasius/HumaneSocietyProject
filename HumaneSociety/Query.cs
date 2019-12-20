@@ -194,7 +194,8 @@ namespace HumaneSociety
         
         public static void ReadEmployee(Employee employee)
         {
-            List<string> info = new List<string>() { $"Employee Number: {employee.EmployeeNumber}", $"Last Name:  {employee.LastName}", $"First Name:  {employee.FirstName}", $"email : {employee.Email}" };
+            var employeeToRead = db.Employees.FirstOrDefault(e => e.EmployeeNumber == employee.EmployeeNumber);
+            List<string> info = new List<string>() { "Employee Number : " + employeeToRead.EmployeeNumber + "Name : " + employeeToRead.FirstName + employeeToRead.LastName, "Email : " + employeeToRead.Email };
             UserInterface.DisplayUserOptions(info);
             Console.ReadLine();
         }
@@ -231,39 +232,37 @@ namespace HumaneSociety
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
-            Animal dbAnimal = db.Animals.Where(a => a.AnimalId == animalId).Single();
-            foreach(KeyValuePair<int,string> update in updates)
+            Animal dbAnimal = db.Animals.Where(a => a.AnimalId == animalId).Select(a => a).Single();
+
+            if (dbAnimal.Category.Name != updates[1])
             {
-                switch (update.Key)
-                {
-                    case 1:
-                        var dbCatagory = db.Categories.Where(a => a.Name == update.Value).SingleOrDefault();
-                        var dbCatagoryId = dbCatagory.CategoryId;
-                        dbAnimal.CategoryId = dbCatagoryId;
-                        break;
-                    case 2:
-                        dbAnimal.Name = update.Value;
-                        break;
-                    case 3:
-                        dbAnimal.Age = Convert.ToInt32(update.Value);
-                        break;
-                    case 4:
-                        dbAnimal.Demeanor = update.Value;
-                        break;
-                    case 5:
-                        dbAnimal.KidFriendly = Convert.ToBoolean(update.Value);
-                        break;
-                    case 6:
-                        dbAnimal.PetFriendly = Convert.ToBoolean(update.Value);
-                        break;
-                    case 7:
-                        dbAnimal.Weight = Convert.ToInt32(update.Value);
-                        break;
-                    default:
-                        break;
-                }
+                dbAnimal.Category.Name = updates[1];
             }
-        db.SubmitChanges();
+            if (dbAnimal.Name != updates[2])
+            {
+                dbAnimal.Name = updates[2];
+            }
+            if (dbAnimal.Age != Convert.ToInt32(updates[3]))
+            {
+                dbAnimal.Age = Convert.ToInt32(updates[3]);
+            }
+            if (dbAnimal.Demeanor != updates[4])
+            {
+                dbAnimal.Demeanor = updates[4];
+            }
+            if (dbAnimal.KidFriendly != Convert.ToBoolean(updates[5]))
+            {
+                dbAnimal.KidFriendly = Convert.ToBoolean(updates[5]);
+            }
+            if(dbAnimal.PetFriendly != Convert.ToBoolean(updates[6]))
+            {
+                dbAnimal.PetFriendly = Convert.ToBoolean(updates[6]);
+            }
+            if (dbAnimal.Weight != Convert.ToInt32(updates[7]))
+            {
+                dbAnimal.Weight = Convert.ToInt32(updates[7]);
+            }
+            db.SubmitChanges();
         }
 
         internal static void RemoveAnimal(Animal animal)
@@ -359,7 +358,10 @@ namespace HumaneSociety
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
+
             return db.Adoptions.Where(a => a.ApprovalStatus == "pending");
+            
+
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
@@ -385,8 +387,8 @@ namespace HumaneSociety
         // TODO: Shots Stuff
         internal static IQueryable<AnimalShot> GetShots(Animal animal)
         {
-
              return db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).Select(a => a);
+
         }
 
         internal static void UpdateShot(string shotName, Animal animal)
