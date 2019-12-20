@@ -385,8 +385,8 @@ namespace HumaneSociety
         // TODO: Shots Stuff
         internal static IQueryable<AnimalShot> GetShots(Animal animal)
         {
-            IQueryable<AnimalShot> getShotUpdate = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId);
-            return getShotUpdate;
+
+             return db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).Select(a => a);
         }
 
         internal static void UpdateShot(string shotName, Animal animal)
@@ -394,7 +394,15 @@ namespace HumaneSociety
             AnimalShot updateNewShot = new AnimalShot();
             updateNewShot.AnimalId = animal.AnimalId;
 
-            var shotGiven = db.AnimalShots.Where(s => s.ShotId);
+            var shotGivenToAnimal = db.Shots.Where(s => s.Name == shotName).Single();
+
+            updateNewShot.ShotId = shotGivenToAnimal.ShotId;
+            updateNewShot.DateReceived = DateTime.Now;
+            db.AnimalShots.Where(a => a.AnimalId == shotGivenToAnimal.ShotId);
+
+            db.AnimalShots.InsertOnSubmit(updateNewShot);
+            db.SubmitChanges();
+            
         }
     }
 }
