@@ -292,21 +292,27 @@ namespace HumaneSociety
                             break;
                         case 3:
                             var dbAge = results.Where(a => a.Age == Convert.ToInt32(update.Value));
+                            results = dbAge;
                             break;
                         case 4:
                             var dbDemeanor = results.Where(a => a.Demeanor == update.Value);
+                            results = dbDemeanor;
                             break;
                         case 5:
                             var dbKidFriendly = results.Where(a => a.KidFriendly == Convert.ToBoolean(update.Value));
+                            results = dbKidFriendly;    
                             break;
                         case 6:
                             var dbPetFriendly = results.Where(a => a.PetFriendly == Convert.ToBoolean(update.Value));
+                            results = dbPetFriendly;
                             break;
                         case 7:
                             var dbWeight = results.Where(a => a.Weight == Convert.ToInt32(update.Value));
+                            results = dbWeight;
                             break;
                         case 8:
                             var dbAnimalId = results.Where(a => a.AnimalId == Convert.ToInt32(update.Value));
+                            results = dbAnimalId;
                             break;
                         default:
                             UserInterface.DisplayUserOptions("Input not recognized please try again."); //this the function we want?
@@ -344,13 +350,12 @@ namespace HumaneSociety
 
         internal static Room GetRoom(int animalId)
         {
-            var foundAnimalId = db.Animals.Where(a => a.AnimalId == animalId).Single().AnimalId;
-            return db.Rooms.Where(s => s.AnimalId == foundAnimalId).Single();
+            var foundAnimalRoom = db.Rooms.Where(a => a.AnimalId == animalId).FirstOrDefault();
+            return foundAnimalRoom;
         }
         
         internal static int GetDietPlanId(string dietPlanName)
         {
-         
             try
             {
                 DietPlan foundDietPlan = db.DietPlans.Where(a => a.Name == dietPlanName).Single();
@@ -362,8 +367,6 @@ namespace HumaneSociety
                 DietPlan foundDietPlan = db.DietPlans.Where(a => a.Name == dietPlanName).Single();
                 return foundDietPlan.DietPlanId;
             }
-            
-           
         }
 
         internal static void AddDietPlanId(string dietPlanName)
@@ -391,7 +394,6 @@ namespace HumaneSociety
 
             return db.Adoptions.Where(a => a.ApprovalStatus == "pending");
             
-
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
